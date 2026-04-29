@@ -21,7 +21,7 @@ const newspapersLogos = [
 
 const Featured = () => {
   return (
-    <div className="my-10 bg-base-200">
+    <div className="my-15 p-5 bg-base-200">
       <h2 className="text-4xl font-bold text-left mb-6">
         We were <span className="text-primary">featured</span> on
       </h2>
@@ -34,7 +34,7 @@ const Featured = () => {
         modules={[Autoplay]}
         loop={true}
         autoplay={{
-          delay: 2500,
+          delay: 1000,
           disableOnInteraction: false,
         }}
       >

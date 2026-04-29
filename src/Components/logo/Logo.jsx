@@ -3,10 +3,10 @@ import LogoImg from "../../assets/images/logoT.png";
 
 const Logo = () => {
   return (
-    <div className="flex items-center">
-      <img src={LogoImg} alt="" className="w-16 h-14 block rounded-full" />
-      <h3 className="text-2xl font-semibold text-primary leading-none">
-        <span className="text-purple-700">e</span>TutionBd
+    <div className="flex items-center gap-1">
+      <img src={LogoImg} alt="" className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover" />
+      <h3 className="text-lg md:text-xl font-semibold text-primary leading-none whitespace-nowrap">
+        <span className="text-orange-600">e</span>TutionBd
       </h3>
     </div>
   );
