@@ -6,7 +6,7 @@ import { RxPeople } from "react-icons/rx";
 const Works = () => {
   return (
     <div className="my-10 bg-blue-50 py-10">
-      <h2 className="text-3xl font-semibold text-left mb-8 ml-1.5">How <span className="text-primary">It</span> Works</h2>
+      <h2 className="text-3xl font-semibold text-left mb-8 ml-2">How <span className="text-primary">It</span> Works</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
         

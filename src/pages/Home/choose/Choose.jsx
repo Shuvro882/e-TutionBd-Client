@@ -7,7 +7,7 @@ import { MdOutlineVerifiedUser } from "react-icons/md";
 const Choose = () => {
   return (
    <div className="my-20">
-    <h2 className="text-left text-2xl font-semibold">Why Choose <span className="text-orange-600">e</span>TutionBd?</h2>
+    <h2 className="text-left text-2xl font-semibold ml-2">Why Choose <span className="text-orange-600">e</span>TutionBd?</h2>
      <div className="grid grid-cols-1 md:grid-cols-4">
 
       <div className="flex items-center gap-4 p-4 rounded-xl max-w-sm">

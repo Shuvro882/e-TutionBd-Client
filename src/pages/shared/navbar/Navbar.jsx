@@ -1,15 +1,15 @@
 import React from "react";
 import Logo from "../../../Components/logo/Logo";
-import { NavLink } from "react-router";
+import MyLinks from "./MyLinks";
 
 const Navbar = () => {
   const links = (
     <>
-      <li><NavLink to="">Home</NavLink></li>
-      <li><NavLink to="">Tution</NavLink></li>
-      <li><NavLink to="">Tutor</NavLink></li>
-      <li><NavLink to="">About</NavLink></li>
-      <li><NavLink to="">Contact</NavLink></li>
+      <li><MyLinks to="/">Home</MyLinks></li>
+      <li><MyLinks to="1">Tution</MyLinks></li>
+      <li><MyLinks to="1">Tutor</MyLinks></li>
+      <li><MyLinks to="1">About</MyLinks></li>
+      <li><MyLinks to="/contact">Contact</MyLinks></li>
     
     </>
   );
