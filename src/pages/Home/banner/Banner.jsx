@@ -57,7 +57,7 @@ const Banner = () => {
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 1.2 }}
-            className="mt-6"
+            className="pt-10"
           >
             <button className="btn bg-primary text-white mr-2">
               Find Tution <FaArrowRightLong />
