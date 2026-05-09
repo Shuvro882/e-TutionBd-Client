@@ -8,6 +8,7 @@ import useAuth from "../../../hooks/useAuth";
 const Navbar = () => {
 
   const {user, logOut} = useAuth();
+  console.log(user);
 
   const handleLogOut = () =>{
      logOut()
@@ -21,7 +22,7 @@ const Navbar = () => {
   const links = (
     <>
       <li><MyLinks to="/">Home</MyLinks></li>
-      <li><MyLinks to="1">Tution</MyLinks></li>
+      <li><MyLinks to="1">Tuition</MyLinks></li>
       <li><MyLinks to="1">Tutor</MyLinks></li>
       <li><MyLinks to="1">About</MyLinks></li>
       <li><MyLinks to="/contacts">Contact</MyLinks></li>
@@ -67,12 +68,50 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-       {
-        user?
-        <a onClick={handleLogOut} className="btn">Log Out</a>
-        :<Link to="/logins" className="btn">Log in</Link>
-       }
+  {user ? (
+    <div className="flex items-center gap-3">
+
+      {/* Profile Dropdown */}
+      <div className="dropdown dropdown-end">
+        <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+          <div className="w-10 rounded-full">
+            <img
+            src={user?.photoURL || "https://i.pravatar.cc/150"}
+            alt="profile"
+            />
+          </div>
+        </label>
+
+        <ul
+          tabIndex={0}
+          className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+        >
+          <li>
+            <span className="font-semibold">{user?.displayName || "User"}</span>
+          </li>
+          <li>
+            <Link to="/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            <button onClick={handleLogOut} className="text-red-500">
+              Logout
+            </button>
+          </li>
+        </ul>
       </div>
+    </div>
+  ) : (
+    <div className="flex items-center gap-2">
+      <Link to="/logins" className="btn btn-ghost">
+        Log in
+      </Link>
+
+      <Link to="/registration" className="btn btn-primary text-white">
+        Register
+      </Link>
+    </div>
+  )}
+</div>
     </div>
   );
 };
