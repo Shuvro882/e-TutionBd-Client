@@ -8,6 +8,8 @@ import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashBoardLayout";
 import MyTuitions from "../pages/Dashboard/student/MyTuitions";
 import PostTuition from "../pages/Dashboard/student/PostTuition";
+import NotFound from "../pages/errorPage/ErrorPage";
+
 
 
 
@@ -49,4 +51,8 @@ export const router = createBrowserRouter([
       }
     ]
   },
+  {
+  path: "*",
+  Component: NotFound,
+}
 ]);

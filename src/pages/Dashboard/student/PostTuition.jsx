@@ -195,7 +195,7 @@ const PostTuition = () => {
             </div>
           </div>
 
-          {/* 🔹 Submit */}
+          {/*  Submit */}
           <button className="btn bg-blue-600 w-full text-white text-lg">
             Post Tuition Now
           </button>

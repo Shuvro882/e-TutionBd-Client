@@ -2,8 +2,12 @@ import React from "react";
 import { Link, Outlet, useLocation } from "react-router";
 import useAuth from "../hooks/useAuth";
 import ActiveBtn from "../pages/Dashboard/ActiveBtn";
-import { IoIosLogOut } from "react-icons/io";
-import { CiCirclePlus } from "react-icons/ci";
+import { IoIosLogOut, IoIosSettings } from "react-icons/io";
+import { FaCirclePlus } from "react-icons/fa6";
+import { MdDashboard, MdOutlinePayment } from "react-icons/md";
+import { IoMenu, IoPeople } from "react-icons/io5";
+
+import Logo from "../Components/logo/Logo";
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
@@ -23,7 +27,6 @@ const DashboardLayout = () => {
     "/dashboard/my-tuitions": "My Tuitions",
     "/dashboard/post-tuitions": "Post New Tuition",
     "/dashboard/applied-tutors": "Applied Tutors",
-    "/dashboard/ongoing-tuitions": "Ongoing Tuitions",
     "/dashboard/payment-history": "Payment History",
     "/dashboard/profile-settings": "Profile Settings",
   };
@@ -36,7 +39,7 @@ const DashboardLayout = () => {
         {/* ===== MAIN CONTENT ===== */}
         <div className="drawer-content flex flex-col">
           {/* ===== NAVBAR ===== */}
-          <nav className="navbar bg-base-100 px-4 lg:px-8 sticky top-0 z-50 shadow">
+          <nav className="navbar bg-base-100 px-4 lg:px-8 py-4 sticky top-0 z-50 shadow">
             <div className="flex-1 flex items-center justify-between">
               {/* LEFT SIDE PAGE TITLE */}
               <h1 className="text-lg sm:text-xl font-bold text-primary">
@@ -103,44 +106,54 @@ const DashboardLayout = () => {
           <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
 
           {/* IMPORTANT: flex column added */}
-          <aside className="min-h-full w-64 bg-base-100 p-4 flex flex-col">
+          <aside className="min-h-full w-64 bg-base-100 p-4 flex flex-col shadow-sm">
+            <div className="pb-2 mb-2 w-full border-b border-gray-200">
+              <Link to="/" className="block w-full">
+                <Logo />
+              </Link>
+            </div>
+
             {/* MENU (flex-1 so logout stays bottom) */}
             <ul className="menu space-y-1 flex-1">
               <li>
-                <Link to="/">Dashboard Home</Link>
+                
+                <ActiveBtn to="/dashboard/dashboard-home">
+                  <MdDashboard />
+                  Dashboard Home
+                </ActiveBtn>
               </li>
 
               <li>
-                <ActiveBtn to="/dashboard/my-tuitions">My Tuitions</ActiveBtn>
+                
+                <ActiveBtn to="/dashboard/my-tuitions">
+                <IoMenu />
+                My Tuitions</ActiveBtn>
               </li>
 
               <li>
                 <ActiveBtn to="/dashboard/post-tuitions">
-                  <CiCirclePlus className="text-gray-600" />
+                  <FaCirclePlus />
                   Post New Tuition
                 </ActiveBtn>
               </li>
 
               <li>
                 <ActiveBtn to="/dashboard/applied-tutors">
+                <IoPeople />
                   Applied Tutors
                 </ActiveBtn>
               </li>
 
               <li>
-                <ActiveBtn to="/dashboard/ongoing-tuitions">
-                  Ongoing Tuitions
-                </ActiveBtn>
-              </li>
-
-              <li>
                 <ActiveBtn to="/dashboard/payment-history">
+                <MdOutlinePayment />
                   Payment History
                 </ActiveBtn>
               </li>
 
               <li>
                 <ActiveBtn to="/dashboard/profile-settings">
+                <IoIosSettings />
                   Profile Settings
                 </ActiveBtn>
               </li>
