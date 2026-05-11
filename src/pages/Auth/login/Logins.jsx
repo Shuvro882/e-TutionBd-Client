@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import RegImage from "../../../assets/images/RegImage.jpeg";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
-import { Link } from "react-router";
 import { FaEye } from "react-icons/fa6";
 import { IoEyeOff } from "react-icons/io5";
 import SocialLogin from "../Socialogin/SocialLogin";
+import { useLocation, useNavigate } from "react-router";
 
 const Logins = () => {
   const [show, setShow] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/";
 
   const {
     register,
@@ -19,17 +23,16 @@ const Logins = () => {
   const { signInUser } = useAuth();
 
   const handleLogin = (data) => {
-    console.log("form data", data);
     signInUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
+
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
-  
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -69,33 +72,35 @@ const Logins = () => {
 
                 {/* Password */}
                 <div className="relative">
-                <label className="label">Password</label>
-                <input
-                  type={show ? "text" : "password"}
-                  {...register("password", { required: true, minLength: 6 })}
-                  className="input"
-                  placeholder="Password"
-                />
-                {errors.password?.type === "minLength" && (
-                  <p className="text-red-500">
-                    Password must be 6 characters or longer.
-                  </p>
-                )}
+                  <label className="label">Password</label>
+                  <input
+                    type={show ? "text" : "password"}
+                    {...register("password", { required: true, minLength: 6 })}
+                    className="input"
+                    placeholder="Password"
+                  />
+                  {errors.password?.type === "minLength" && (
+                    <p className="text-red-500">
+                      Password must be 6 characters or longer.
+                    </p>
+                  )}
 
-                <button
-                  type="button"
-                  onClick={() => setShow(!show)}
-                  className="absolute right-6 top-8"
-                >
-                  {show ?<IoEyeOff />  : <FaEye />}
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => setShow(!show)}
+                    className="absolute right-6 top-8"
+                  >
+                    {show ? <IoEyeOff /> : <FaEye />}
+                  </button>
                 </div>
 
                 <div>
                   <a className="link link-hover">Forgot password?</a>
                 </div>
 
-                <button className="btn btn-primary text-white mt-4">Login</button>
+                <button className="btn btn-primary text-white mt-4">
+                  Login
+                </button>
               </fieldset>
             </form>
             <SocialLogin></SocialLogin>

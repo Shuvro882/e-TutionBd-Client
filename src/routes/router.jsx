@@ -9,6 +9,12 @@ import DashboardLayout from "../layouts/DashBoardLayout";
 import MyTuitions from "../pages/Dashboard/student/MyTuitions";
 import PostTuition from "../pages/Dashboard/student/PostTuition";
 import NotFound from "../pages/errorPage/ErrorPage";
+import AppliedTutors from "../pages/Dashboard/student/AppliedTutors";
+import ProfileSettings from "../pages/Dashboard/student/ProfileSettings";
+import StudentHome from "../pages/Dashboard/student/StudentHome";
+import TutorProfile from "../pages/Dashboard/tutor/TutorProfile";
+import AllTutor from "../pages/Home/allTutor/AllTutor";
+
 
 
 
@@ -33,7 +39,12 @@ export const router = createBrowserRouter([
       },
       {
         path:"registration",
-        Component: Registration
+        Component: Registration,
+      },
+      {
+        path:"all-tutors",
+        element:<PrivateRoute><AllTutor></AllTutor></PrivateRoute>
+
       }
     ]
   },
@@ -48,6 +59,22 @@ export const router = createBrowserRouter([
       {
         path: 'post-tuitions',
         Component: PostTuition,
+      },
+      {
+        path: 'applied-tutors',
+        Component: AppliedTutors,
+      },
+      {
+        path: 'profile-settings',
+        Component: ProfileSettings,
+      },
+      {
+        path:'student-home',
+        Component: StudentHome,
+      },
+      {
+        path: 'tutor-profile',
+        Component: TutorProfile,
       }
     ]
   },

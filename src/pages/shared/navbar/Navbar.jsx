@@ -23,7 +23,7 @@ const Navbar = () => {
     <>
       <li><MyLinks to="/">Home</MyLinks></li>
       <li><MyLinks to="1">Tuition</MyLinks></li>
-      <li><MyLinks to="1">Tutor</MyLinks></li>
+      <li><MyLinks to="/all-tutors">Tutor</MyLinks></li>
       <li><MyLinks to="1">About</MyLinks></li>
       <li><MyLinks to="/contacts">Contact</MyLinks></li>
     
@@ -31,7 +31,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar bg-base-100 shadow-sm">
+    <div className="navbar bg-base-100/90 backdrop-blur sticky top-0 z-50 shadow-sm">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

@@ -1,21 +1,22 @@
 import React from 'react';
+import { Navigate, useLocation } from 'react-router';
 import useAuth from '../hooks/useAuth';
-import { Navigate } from 'react-router';
 import Loading from '../Components/loading/Loading';
 
-const PrivateRoute = ({children}) => {
-    const {user, loading} = useAuth();
+const PrivateRoute = ({ children }) => {
+    const { user, loading } = useAuth();
+    const location = useLocation();
 
-    if(loading){
-        return <div>
-            <Loading></Loading>
-        </div>
+    if (loading) {
+        return <Loading />;
     }
 
-    if(!user){
-        return <Navigate to="/logins"></Navigate>
+    if (!user) {
+        return (
+            <Navigate to="/logins" state={{ from: location }} replace />
+        );
     }
-    
+
     return children;
 };
 

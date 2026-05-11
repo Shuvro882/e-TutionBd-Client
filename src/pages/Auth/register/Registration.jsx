@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import RegImage from "../../../assets/images/RegImage.jpeg";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { FaEye } from "react-icons/fa6";
 import { IoEyeOff } from "react-icons/io5";
-import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Registration = () => {
   const [show, setShow] = useState(false);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
 
   const {
     register,
@@ -17,44 +21,42 @@ const Registration = () => {
   } = useForm();
 
   const { registerUser, updateUserProfile } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   const handleRegistration = (data) => {
     console.log("after register", data);
- 
-    const profileImg = data.photo[0];
 
     registerUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
-        //store the image and get the photo url
-        const formData = new FormData();
-        formData.append('image', profileImg)
 
-        const image_API_URL = `https://api.imgbb.com/1/upload?expiration=600&key=${import.meta.env.VITE_image_host_key}`
-        
-        axios.post(image_API_URL, formData)
-        .then(res =>{
-          console.log('after image upload', res.data.data.url)
+        // create user in database
+        const userInfo = {
+          email: data.email,
+          displayName: data.name,
+          phoneNumber: data.phoneNumber,
+          role: data.role,
+        };
 
-
-          //update user profile
-          const userProfile = {
-            displayName : data.name,
-            photoURL : res.data.data.url,
+        axiosSecure.post(`/users`, userInfo).then((res) => {
+          if (res.data.insertedId) {
+            console.log("user created in the database");
           }
-          updateUserProfile(userProfile)
-          .then(() =>{
-            console.log('user profile updated done')
+        });
+
+        // update user profile
+        const userProfile = {
+          displayName: data.name,
+        };
+
+        updateUserProfile(userProfile)
+          .then(() => {
+            console.log("user profile updated done");
+
+            //  redirect to previous page
+            navigate(from, { replace: true });
           })
-          .catch(error => console.log(error))
-
-
-        })
-
-
-        //update user profile
-
-
+          .catch((error) => console.log(error));
       })
       .catch((error) => {
         console.log(error);
@@ -96,7 +98,6 @@ const Registration = () => {
                   </label>
 
                   <div className="flex items-center gap-6">
-                    {/* Student */}
                     <label className="label cursor-pointer gap-2">
                       <input
                         type="radio"
@@ -107,7 +108,6 @@ const Registration = () => {
                       <span className="label-text">Student</span>
                     </label>
 
-                    {/* Tutor */}
                     <label className="label cursor-pointer gap-2">
                       <input
                         type="radio"
@@ -119,7 +119,6 @@ const Registration = () => {
                     </label>
                   </div>
 
-                  {/* Error */}
                   {errors.role && (
                     <p className="text-red-500 text-sm mt-1">
                       Role is required
@@ -139,18 +138,6 @@ const Registration = () => {
                   <p className="text-red-500 text-sm">Name is required.</p>
                 )}
 
-                {/* Photo field */}
-                <label className="label">Photo</label>
-                <input
-                  type="file"
-                  {...register("photo", { required: true })}
-                  className="file-input"
-                  placeholder="Your Photo"
-                />
-                {errors.photo?.type === "required" && (
-                  <p className="text-red-500 text-sm">Photo is required.</p>
-                )}
-                
                 {/* Phone */}
                 <label className="label">Phone Number</label>
                 <input
@@ -159,7 +146,7 @@ const Registration = () => {
                   className="input"
                   placeholder="Your Phone Number"
                 />
-                {errors.name?.type === "required" && (
+                {errors.phoneNumber?.type === "required" && (
                   <p className="text-red-500 text-sm">
                     Phone Number is required.
                   </p>
@@ -217,10 +204,12 @@ const Registration = () => {
                     {show ? <IoEyeOff /> : <FaEye />}
                   </button>
                 </div>
+
                 <button className="btn btn-primary text-white mt-4">
                   Register
                 </button>
               </fieldset>
+
               <p className="text-sm">
                 Already have an account?{" "}
                 <Link to="/logins" className="text-primary underline">

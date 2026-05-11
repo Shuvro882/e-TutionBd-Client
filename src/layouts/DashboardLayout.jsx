@@ -1,13 +1,13 @@
 import React from "react";
 import { Link, Outlet, useLocation } from "react-router";
 import useAuth from "../hooks/useAuth";
-import ActiveBtn from "../pages/Dashboard/ActiveBtn";
 import { IoIosLogOut, IoIosSettings } from "react-icons/io";
 import { FaCirclePlus } from "react-icons/fa6";
 import { MdDashboard, MdOutlinePayment } from "react-icons/md";
 import { IoMenu, IoPeople } from "react-icons/io5";
 
 import Logo from "../Components/logo/Logo";
+import ActiveBtn from "../pages/Dashboard/activeBtn/ActiveBtn";
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
@@ -29,6 +29,7 @@ const DashboardLayout = () => {
     "/dashboard/applied-tutors": "Applied Tutors",
     "/dashboard/payment-history": "Payment History",
     "/dashboard/profile-settings": "Profile Settings",
+    "/dashboard/tutor-profile": "Tutor Profile",
   };
 
   return (
@@ -117,7 +118,7 @@ const DashboardLayout = () => {
             <ul className="menu space-y-1 flex-1">
               <li>
                 
-                <ActiveBtn to="/dashboard/dashboard-home">
+                <ActiveBtn to="/dashboard/student-home">
                   <MdDashboard />
                   Dashboard Home
                 </ActiveBtn>
@@ -155,6 +156,12 @@ const DashboardLayout = () => {
                 <ActiveBtn to="/dashboard/profile-settings">
                 <IoIosSettings />
                   Profile Settings
+                </ActiveBtn>
+              </li>
+              <li>
+                <ActiveBtn to="/dashboard/tutor-profile">
+                <IoIosSettings />
+                  Tutor Profile Settings
                 </ActiveBtn>
               </li>
             </ul>
