@@ -11,7 +11,7 @@ const About = () => {
         {/* Title */}
         <h2 className="text-3xl md:text-5xl font-bold text-gray-800 leading-tight">
           Bangladesh’s Most Trusted{" "} <br />
-          <span className="text-blue-600">Tuition Platform</span>
+          <span className="text-primary">Tuition Platform</span>
         </h2>
 
         {/* Description */}
@@ -27,7 +27,7 @@ const About = () => {
 
       {/* Vision Card */}
       <div className="bg-white shadow-lg rounded-2xl p-6 text-center hover:shadow-2xl transition-all duration-300">
-        <div className="text-4xl text-blue-600 flex justify-center mb-4">
+        <div className="text-4xl text-primary flex justify-center mb-4">
           <FaEye />
         </div>
 
@@ -44,7 +44,7 @@ const About = () => {
 
       {/* Mission Card */}
       <div className="bg-white shadow-lg rounded-2xl p-6 text-center hover:shadow-2xl transition-all duration-300">
-        <div className="text-4xl text-blue-600 flex justify-center mb-4">
+        <div className="text-4xl text-primary flex justify-center mb-4">
           <FaBullseye />
         </div>
 

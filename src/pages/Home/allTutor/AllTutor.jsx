@@ -77,7 +77,7 @@ const AllTutor = () => {
                       </h3>
         
                       {/* role */}
-                      <p className="text-blue-600 text-sm font-semibold mt-1">
+                      <p className="text-primary text-sm font-semibold mt-1">
                         {tutor.role}
                       </p>
         

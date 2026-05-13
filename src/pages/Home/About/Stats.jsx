@@ -61,13 +61,13 @@ const StatCard = ({ value, suffix, label, icon }) => {
       
       {/* ICON */}
       <div className="flex justify-center mb-3">
-        <div className="text-3xl text-blue-500 bg-blue-100 p-3 rounded-full">
+        <div className="text-3xl text-primary bg-blue-100 p-3 rounded-full">
           {icon}
         </div>
       </div>
 
       {/* COUNT */}
-      <h2 className="text-3xl font-bold text-blue-500">
+      <h2 className="text-3xl font-bold text-primary">
         {count.toLocaleString()}
         {suffix}
       </h2>

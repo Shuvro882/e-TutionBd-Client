@@ -85,7 +85,7 @@ const Footer = () => {
       <div className="space-y-2 text-sm">
         <p>📧 info@eTuitionBd.com.bd</p>
         <p>📞 Call Hotline : 09678-651464</p>
-        <p>📍 House-10/5, Section-1, Mirpur-12, Dhaka.</p>
+        <p>📍 House-10/5, Section-1, Shyamoli, Dhaka.</p>
       </div>
 
       
