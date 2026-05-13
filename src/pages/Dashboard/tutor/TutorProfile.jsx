@@ -72,6 +72,7 @@ const TutorProfile = () => {
         address: data.address,
         subject: data.subject,
         university: data.university,
+        qualification: data.qualification,
         experience: data.experience,
         about: data.about,
         photoURL,
@@ -178,6 +179,13 @@ const TutorProfile = () => {
             disabled={!editMode}
             placeholder="University"
             {...register("university")}
+          />
+          {/* UNIVERSITY */}
+          <input
+            className="input input-bordered w-full mb-3"
+            disabled={!editMode}
+            placeholder="Qualification"
+            {...register("qualification")}
           />
 
           {/* EXPERIENCE */}

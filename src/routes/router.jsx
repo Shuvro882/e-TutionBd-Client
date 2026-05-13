@@ -15,6 +15,8 @@ import StudentHome from "../pages/Dashboard/student/StudentHome";
 import TutorProfile from "../pages/Dashboard/tutor/TutorProfile";
 import AllTutor from "../pages/Home/allTutor/AllTutor";
 import About from "../pages/Home/About/About";
+import { Component } from "react";
+import TutorDetails from "../pages/Home/Latest-Tutors/TutorDetails";
 
 
 
@@ -46,6 +48,10 @@ export const router = createBrowserRouter([
         path:"all-tutors",
         element:<PrivateRoute><AllTutor></AllTutor></PrivateRoute>
 
+      },
+      {
+        path:"/tutors/:id",
+        Component: TutorDetails,
       },
       {
         path: 'about',

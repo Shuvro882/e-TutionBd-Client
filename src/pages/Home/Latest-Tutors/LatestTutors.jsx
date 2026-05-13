@@ -3,11 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
 import { FaStar } from "react-icons/fa";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { FaCircleArrowRight } from "react-icons/fa6";
+import Loading from "../../../Components/loading/Loading"
 
 const LatestTutors = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: tutors = [] } = useQuery({
+  const { data: tutors = [], isLoading } = useQuery({
     queryKey: ["latestTutors"],
     queryFn: async () => {
       const res = await axiosSecure.get("/tutors?limit=6");
@@ -15,13 +17,11 @@ const LatestTutors = () => {
     },
   });
 
-//   if (isPending) {
-//     return (
-//       <div className="flex justify-center items-center py-20">
-//         <span className="loading loading-spinner loading-lg text-primary"></span>
-//       </div>
-//     );
-//   }
+  if (isLoading) {
+    return (
+      <Loading></Loading>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-16">
@@ -120,8 +120,7 @@ const LatestTutors = () => {
             </div>
 
             {/* button */}
-            <Link
-              to={`/tutors/${tutor._id}`}
+            <Link to={`/tutors/${tutor._id}`}
               className="
                 btn
                 btn-sm
@@ -146,9 +145,10 @@ const LatestTutors = () => {
       <div className="text-center mt-12">
         <Link
           to="/all-tutors"
-          className="btn btn-outline btn-sm border-blue-500 text-blue-600 hover:bg-blue-600 hover:text-white px-6 rounded-lg"
+          className="btn btn-outline btn-sm border-blue-500 text-xl text-blue-500 hover:bg-blue-500 hover:text-white px-6 py-6 rounded-lg"
         >
           See All Tutors
+          <FaCircleArrowRight />
         </Link>
       </div>
 
