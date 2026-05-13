@@ -14,6 +14,7 @@ import ProfileSettings from "../pages/Dashboard/student/ProfileSettings";
 import StudentHome from "../pages/Dashboard/student/StudentHome";
 import TutorProfile from "../pages/Dashboard/tutor/TutorProfile";
 import AllTutor from "../pages/Home/allTutor/AllTutor";
+import About from "../pages/Home/About/About";
 
 
 
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
         path:"all-tutors",
         element:<PrivateRoute><AllTutor></AllTutor></PrivateRoute>
 
+      },
+      {
+        path: 'about',
+        Component: About,
       }
     ]
   },
