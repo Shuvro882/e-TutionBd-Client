@@ -62,6 +62,7 @@ const TuitionPostDetails = () => {
     try {
       const applyInfo = {
         tuitionId: tuition._id,
+        studentEmail: tuition.postedEmail,
         tutorEmail: user.email,
         tutorName: user.displayName,
         tutorImage: dbUser.photoURL,

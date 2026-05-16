@@ -170,6 +170,12 @@ const DashboardLayout = () => {
                   Tuition Management
                 </ActiveBtn>
               </li>
+              <li>
+                <ActiveBtn to="/dashboard/my-applications">
+                <IoIosSettings />
+                  My Applications
+                </ActiveBtn>
+              </li>
             </ul>
 
             {/* ===== LOGOUT (BOTTOM FIXED) ===== */}

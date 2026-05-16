@@ -12,7 +12,8 @@ const TutorProfile = () => {
   const fileRef = useRef();
 
   const [editMode, setEditMode] = useState(false);
-  const [preview, setPreview] = useState("");
+  const [preview, setPreview] = useState(user?.photoURL || "");
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const { register, handleSubmit, reset } = useForm();
 
@@ -25,12 +26,11 @@ const TutorProfile = () => {
         address: user.address || "",
         subject: user.subject || "",
         university: user.university || "",
+        qualification: user.qualification || "",
         experience: user.experience || "",
         about: user.about || "",
         photoURL: user.photoURL || "",
       };
-
-      setPreview(data.photoURL);
       reset(data);
     }
   }, [user, reset]);
@@ -47,16 +47,16 @@ const TutorProfile = () => {
       let photoURL = preview;
 
       // upload image if selected
-      if (fileRef.current.files[0]) {
+      if (selectedFile) {
         const formData = new FormData();
-        formData.append("image", fileRef.current.files[0]);
+        formData.append("image", selectedFile);
 
         const res = await fetch(
           `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`,
           {
             method: "POST",
             body: formData,
-          }
+          },
         );
 
         const result = await res.json();
@@ -80,7 +80,7 @@ const TutorProfile = () => {
 
       const res = await axiosSecure.patch(
         `/users/${user.email}`,
-        updatedProfile
+        updatedProfile,
       );
 
       if (res.data.modifiedCount > 0) {
@@ -101,12 +101,9 @@ const TutorProfile = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-6">
-
       {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl md:text-3xl font-bold">
-          My Profile
-        </h2>
+        <h2 className="text-2xl md:text-3xl font-bold">My Profile</h2>
 
         <button
           onClick={() => setEditMode(!editMode)}
@@ -119,10 +116,8 @@ const TutorProfile = () => {
 
       {/* CARD */}
       <div className="bg-base-100 shadow-xl rounded-2xl p-6">
-
         {/* IMAGE */}
         <div className="flex flex-col items-center mb-6">
-
           <img
             src={preview || "https://i.ibb.co/4pDNDk1/avatar.png"}
             onClick={handleImageClick}
@@ -139,7 +134,9 @@ const TutorProfile = () => {
             ref={fileRef}
             onChange={(e) => {
               const file = e.target.files[0];
+
               if (file) {
+                setSelectedFile(file);
                 setPreview(URL.createObjectURL(file));
               }
             }}
@@ -148,7 +145,6 @@ const TutorProfile = () => {
 
         {/* FORM */}
         <form onSubmit={handleSubmit(onSubmit)}>
-
           {/* NAME */}
           <input
             className="input input-bordered w-full mb-3"
@@ -214,11 +210,8 @@ const TutorProfile = () => {
 
           {/* SAVE */}
           {editMode && (
-            <button className="btn btn-primary w-full">
-              Save Changes
-            </button>
+            <button className="btn btn-primary w-full">Save Changes</button>
           )}
-
         </form>
       </div>
     </div>

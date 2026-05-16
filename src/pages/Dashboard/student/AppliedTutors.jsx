@@ -1,160 +1,162 @@
 import React from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
+import Loading from "../../../Components/loading/Loading";
 
 const AppliedTutors = () => {
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  const { data: applications = [], isLoading } = useQuery({
+    queryKey: ["applications", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(
+        `/applications/student/${user.email}`
+      );
+      return res.data;
+    },
+  });
+
+  // ACCEPT
+  const acceptMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosSecure.patch(`/applications/accept/${id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["applications"]);
+    },
+  });
+
+  // REJECT
+  const rejectMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosSecure.patch(`/applications/reject/${id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["applications"]);
+    },
+  });
+
+  // PAYMENT COMPLETE (simulate)
+  const approveMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosSecure.patch(`/applications/approve/${id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["applications"]);
+    },
+  });
+
+  if (isLoading) return <Loading />;
+
+  const total = applications.length;
+  const pending = applications.filter(a => a.status === "pending").length;
+  const approved = applications.filter(a => a.status === "approved").length;
+
   return (
     <div className="p-4 md:p-6">
-      
-      {/* Page Header */}
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold">Applied Tutors</h2>
-        <p className="text-gray-500 mt-1">
-          Review tutor applications for your posted tuitions.
-        </p>
+
+      {/* HEADER */}
+      <h2 className="text-3xl font-bold mb-6">Applied Tutors</h2>
+
+      {/* STATS */}
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="p-4 bg-white shadow rounded">
+          Total: {total}
+        </div>
+        <div className="p-4 bg-white shadow rounded">
+          Pending: {pending}
+        </div>
+        <div className="p-4 bg-white shadow rounded">
+          Approved: {approved}
+        </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        
-        <div className="bg-white shadow rounded-2xl p-5 border">
-          <h3 className="text-gray-500 text-sm">Total Applications</h3>
-          <p className="text-3xl font-bold mt-2">24</p>
-        </div>
-
-        <div className="bg-white shadow rounded-2xl p-5 border">
-          <h3 className="text-gray-500 text-sm">Pending</h3>
-          <p className="text-3xl font-bold mt-2">12</p>
-        </div>
-
-        <div className="bg-white shadow rounded-2xl p-5 border">
-          <h3 className="text-gray-500 text-sm">Approved</h3>
-          <p className="text-3xl font-bold mt-2">5</p>
-        </div>
-
-      </div>
-
-      {/* Search Bar */}
-      <div className="mb-6">
-        <input
-          type="text"
-          placeholder="Search tutors..."
-          className="input input-bordered w-full md:w-80"
-        />
-      </div>
-
-      {/* Table Section */}
-      <div className="overflow-x-auto bg-white shadow rounded-2xl border">
-        
+      {/* TABLE */}
+      <div className="overflow-x-auto bg-white shadow rounded">
         <table className="table">
-          
-          {/* head */}
-          <thead className="bg-base-200">
+          <thead>
             <tr>
               <th>Tutor</th>
-              <th>Qualification</th>
-              <th>Experience</th>
-              <th>Expected Salary</th>
+              <th>Location</th>
+              <th>Budget</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
 
           <tbody>
-
-            {/* Row 1 */}
-            <tr>
-              <td>
-                <div className="flex items-center gap-3">
-                  <img
-                    src="https://i.ibb.co.com/0jqHpnp/avatar.png"
-                    alt=""
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-
-                  <div>
-                    <p className="font-semibold">Rahim Ahmed</p>
-                    <p className="text-sm text-gray-500">
-                      rahim@example.com
-                    </p>
+            {applications.map(app => (
+              <tr key={app._id}>
+                <td>
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={app.tutorImage}
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <div>
+                      <p className="font-bold">{app.tutorName}</p>
+                      <p className="text-sm text-gray-500">
+                        {app.tutorEmail}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </td>
+                </td>
 
-              <td>BSc in Mathematics</td>
+                <td>{app.location}</td>
+                <td>{app.budget}</td>
 
-              <td>3 Years</td>
+                <td>
+                  <span className="badge">
+                    {app.status}
+                  </span>
+                </td>
 
-              <td>$120/month</td>
+                <td className="flex gap-2">
 
-              <td>
-                <span className="badge badge-warning">
-                  Pending
-                </span>
-              </td>
+                  {/* ACCEPT */}
+                  {app.status === "pending" && (
+                    <button
+                      onClick={() => acceptMutation.mutate(app._id)}
+                      className="btn btn-success btn-sm"
+                    >
+                      Accept
+                    </button>
+                  )}
 
-              <td>
-                <div className="flex gap-2">
-                  <button className="btn btn-sm btn-outline">
-                    View
-                  </button>
+                  {/* PAYMENT BUTTON */}
+                  {app.status === "accepted" && (
+                    <button
+                      onClick={() => approveMutation.mutate(app._id)}
+                      className="btn btn-primary btn-sm"
+                    >
+                      Pay & Approve
+                    </button>
+                  )}
 
-                  <button className="btn btn-sm btn-success text-white">
-                    Accept
-                  </button>
+                  {/* REJECT */}
+                  {app.status === "pending" && (
+                    <button
+                      onClick={() => rejectMutation.mutate(app._id)}
+                      className="btn btn-error btn-sm"
+                    >
+                      Reject
+                    </button>
+                  )}
 
-                  <button className="btn btn-sm btn-error text-white">
-                    Reject
-                  </button>
-                </div>
-              </td>
-            </tr>
-
-            {/* Row 2 */}
-            <tr>
-              <td>
-                <div className="flex items-center gap-3">
-                  <img
-                    src="https://i.ibb.co.com/0jqHpnp/avatar.png"
-                    alt=""
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-
-                  <div>
-                    <p className="font-semibold">Nusrat Jahan</p>
-                    <p className="text-sm text-gray-500">
-                      nusrat@example.com
-                    </p>
-                  </div>
-                </div>
-              </td>
-
-              <td>English Literature</td>
-
-              <td>2 Years</td>
-
-              <td>$100/month</td>
-
-              <td>
-                <span className="badge badge-success">
-                  Approved
-                </span>
-              </td>
-
-              <td>
-                <div className="flex gap-2">
-                  <button className="btn btn-sm btn-outline">
-                    View
-                  </button>
-
-                  <button className="btn btn-sm btn-disabled">
-                    Accepted
-                  </button>
-                </div>
-              </td>
-            </tr>
-
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
+
     </div>
   );
 };
