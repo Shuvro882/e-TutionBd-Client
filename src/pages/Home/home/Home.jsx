@@ -3,14 +3,14 @@ import Featured from '../Featured/Featured';
 import Choose from '../choose/Choose';
 import Works from '../works/Works';
 import Banner from '../banner/Banner'
-import TuitionPosts from '../Tuition Posts/TuitionPosts';
 import LatestTutors from '../Latest-Tutors/LatestTutors';
+import LatestTuition from '../Latest-Tuition/LatestTuition';
 
 const Home = () => {
     return (
         <div>
             <Banner></Banner>
-            <TuitionPosts></TuitionPosts>
+            <LatestTuition></LatestTuition>
             <LatestTutors></LatestTutors>
             <Works></Works>
             <Choose></Choose>

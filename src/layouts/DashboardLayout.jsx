@@ -164,6 +164,12 @@ const DashboardLayout = () => {
                   Tutor Profile Settings
                 </ActiveBtn>
               </li>
+              <li>
+                <ActiveBtn to="/dashboard/tuition-management">
+                <IoIosSettings />
+                  Tuition Management
+                </ActiveBtn>
+              </li>
             </ul>
 
             {/* ===== LOGOUT (BOTTOM FIXED) ===== */}

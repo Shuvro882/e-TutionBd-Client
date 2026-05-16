@@ -17,17 +17,15 @@ import AllTutor from "../pages/Home/allTutor/AllTutor";
 import About from "../pages/Home/About/About";
 import { Component } from "react";
 import TutorDetails from "../pages/Home/Latest-Tutors/TutorDetails";
-
-
-
-
-
+import TuitionManagement from "../pages/Dashboard/admin/TuitionManagement";
+import TuitionPostDetails from "../pages/Home/Latest-Tuition/TuitionPostDetails";
+import AllTuition from "../pages/Home/allTuition/AllTuition";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
-    children:[
+    children: [
       {
         index: true,
         Component: Home,
@@ -37,60 +35,83 @@ export const router = createBrowserRouter([
         Component: Contacts,
       },
       {
-        path:"logins",
+        path: "logins",
         Component: Logins,
       },
       {
-        path:"registration",
+        path: "registration",
         Component: Registration,
       },
       {
-        path:"all-tutors",
-        element:<PrivateRoute><AllTutor></AllTutor></PrivateRoute>
-
+        path: "all-tutors",
+        element: (
+          <PrivateRoute>
+            <AllTutor></AllTutor>
+          </PrivateRoute>
+        ),
       },
       {
-        path:"/tutors/:id",
+        path: "/tutors/:id",
         Component: TutorDetails,
       },
       {
-        path: 'about',
+        path: "about",
         Component: About,
-      }
-    ]
-  },
-  {
-    path: 'dashboard',
-    element:<PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
-    children:[
-      {
-        path: 'my-tuitions',
-        Component: MyTuitions
       },
       {
-        path: 'post-tuitions',
+        path: "/tuition-post-details/:id",
+        Component: TuitionPostDetails,
+      },
+      {
+        path: "all-tuition",
+        element: (
+          <PrivateRoute>
+            <AllTuition></AllTuition>
+          </PrivateRoute>
+        ),
+      },
+    ],
+  },
+  {
+    path: "dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "my-tuitions",
+        Component: MyTuitions,
+      },
+      {
+        path: "post-tuitions",
         Component: PostTuition,
       },
       {
-        path: 'applied-tutors',
+        path: "applied-tutors",
         Component: AppliedTutors,
       },
       {
-        path: 'profile-settings',
+        path: "profile-settings",
         Component: ProfileSettings,
       },
       {
-        path:'student-home',
+        path: "student-home",
         Component: StudentHome,
       },
       {
-        path: 'tutor-profile',
+        path: "tutor-profile",
         Component: TutorProfile,
-      }
-    ]
+      },
+      {
+        path: "tuition-management",
+        Component: TuitionManagement,
+      },
+    ],
   },
   {
-  path: "*",
-  Component: NotFound,
-}
+    path: "*",
+    Component: NotFound,
+  },
 ]);
