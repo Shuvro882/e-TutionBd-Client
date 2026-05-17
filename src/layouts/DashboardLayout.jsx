@@ -4,13 +4,25 @@ import useAuth from "../hooks/useAuth";
 import { IoIosLogOut, IoIosSettings } from "react-icons/io";
 import { FaCirclePlus } from "react-icons/fa6";
 import { MdDashboard, MdOutlinePayment } from "react-icons/md";
+import { BsSendCheckFill } from "react-icons/bs";
 import { IoMenu, IoPeople } from "react-icons/io5";
-
 import Logo from "../Components/logo/Logo";
 import ActiveBtn from "../pages/Dashboard/activeBtn/ActiveBtn";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  const { data: dbUser = {} } = useQuery({
+  queryKey: ["dbUser", user?.email],
+  enabled: !!user?.email,
+  queryFn: async () => {
+    const res = await axiosSecure.get(`/users/${user.email}`);
+    return res.data;
+  },
+});
 
   const location = useLocation();
   const path = location.pathname;
@@ -30,6 +42,8 @@ const DashboardLayout = () => {
     "/dashboard/payment-history": "Payment History",
     "/dashboard/profile-settings": "Profile Settings",
     "/dashboard/tutor-profile": "Tutor Profile",
+    "/dashboard/tuition-management": "Tuition Management",
+    "/dashboard/my-applications": "My Applications",
   };
 
   return (
@@ -76,7 +90,7 @@ const DashboardLayout = () => {
                     {user?.displayName || "User"}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {user?.role || "User"} Account
+                    {dbUser?.role || "User"} Account
                   </p>
                 </div>
 
@@ -172,7 +186,7 @@ const DashboardLayout = () => {
               </li>
               <li>
                 <ActiveBtn to="/dashboard/my-applications">
-                <IoIosSettings />
+                <BsSendCheckFill />
                   My Applications
                 </ActiveBtn>
               </li>

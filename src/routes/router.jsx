@@ -45,11 +45,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "all-tutors",
-        element: (
-          <PrivateRoute>
-            <AllTutor></AllTutor>
-          </PrivateRoute>
-        ),
+        Component: AllTutor
       },
       {
         path: "/tutors/:id",
@@ -65,11 +61,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "all-tuition",
-        element: (
-          <PrivateRoute>
-            <AllTuition></AllTuition>
-          </PrivateRoute>
-        ),
+        Component: AllTuition,
       },
     ],
   },

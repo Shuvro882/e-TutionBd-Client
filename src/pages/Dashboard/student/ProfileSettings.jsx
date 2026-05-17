@@ -1,35 +1,65 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+import { FaEdit } from "react-icons/fa";
 
-const ProfileSettings = () => {
-  const [preview, setPreview] = useState("");
+const StudentProfileSettings = () => {
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const fileRef = useRef();
 
-  const handleUpdateProfile = async (data) => {
+  const [editMode, setEditMode] = useState(false);
+  const [preview, setPreview] = useState(user?.photoURL || "");
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const { register, handleSubmit, reset } = useForm();
+
+  // LOAD DEFAULT DATA
+  useEffect(() => {
+  if (user) {
+    reset({
+      name: user.displayName || "",
+      phoneNumber: user.phoneNumber || "",
+      email: user.email || "",
+      address: user.address || "",
+    });
+  }
+}, [user, reset]);
+
+  // IMAGE CLICK
+  const handleImageClick = () => {
+    if (!editMode) return;
+    fileRef.current?.click();
+  };
+
+  // SUBMIT PROFILE
+  const onSubmit = async (data) => {
     try {
-      let photoURL = "";
+      let photoURL = preview;
 
-      // image upload
-      if (data.photo[0]) {
+      // upload image if changed
+      if (selectedFile) {
         const formData = new FormData();
-        formData.append("image", data.photo[0]);
+        formData.append("image", selectedFile);
 
-        const image_API_URL = `https://api.imgbb.com/1/upload?key=${
-          import.meta.env.VITE_image_host_key
-        }`;
+        const res = await fetch(
+          `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
 
-        const res = await axios.post(image_API_URL, formData);
+        const result = await res.json();
 
-        photoURL = res.data.data.url;
+        if (result.success) {
+          photoURL = result.data.url;
+        }
       }
 
-      // updated profile data
       const updatedProfile = {
         name: data.name,
         phoneNumber: data.phoneNumber,
@@ -38,119 +68,122 @@ const ProfileSettings = () => {
         photoURL,
       };
 
-      console.log(updatedProfile);
-    } catch (error) {
-      console.log(error);
+      const res = await axiosSecure.patch(
+        `/users/${user.email}`,
+        updatedProfile
+      );
+
+      if (res.data.modifiedCount > 0) {
+        setEditMode(false);
+        setPreview(photoURL);
+        setSelectedFile(null);
+
+        Swal.fire({
+          icon: "success",
+          title: "Profile Updated!",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <div className="bg-base-100 shadow-xl rounded-2xl p-6">
-        <h2 className="text-3xl font-bold mb-6">Profile Settings</h2>
+    <div className="max-w-4xl mx-auto p-4 md:p-6">
 
-        <form
-          onSubmit={handleSubmit(handleUpdateProfile)}
-          className="space-y-5"
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold">
+          Student Profile
+        </h2>
+
+        <button
+          onClick={() => setEditMode(!editMode)}
+          className="btn btn-primary btn-sm flex items-center gap-2"
         >
-          {/* profile image */}
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-32 h-32 rounded-full overflow-hidden border">
-              {preview ? (
-                <img
-                  src={preview}
-                  alt="preview"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
-                  No Image
-                </div>
-              )}
-            </div>
+          <FaEdit />
+          {editMode ? "Cancel" : "Edit"}
+        </button>
+      </div>
 
-            <input
-              type="file"
-              className="file-input file-input-bordered w-full max-w-xs"
-              {...register("photo")}
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (file) {
-                  setPreview(URL.createObjectURL(file));
-                }
-              }}
-            />
-          </div>
+      {/* CARD */}
+      <div className="bg-base-100 shadow-xl rounded-2xl p-6">
 
-          {/* name */}
-          <div>
-            <label className="label">Name</label>
-            <input
-              type="text"
-              placeholder="Your Name"
-              className="input input-bordered w-full"
-              {...register("name", { required: true })}
-            />
+        {/* IMAGE */}
+        <div className="flex flex-col items-center mb-6">
 
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-1">
-                Name is required
-              </p>
-            )}
-          </div>
+          <img
+            src={preview || "https://i.ibb.co/4pDNDk1/avatar.png"}
+            onClick={handleImageClick}
+            className={`w-28 h-28 rounded-full object-cover border-4 ${
+              editMode ? "cursor-pointer hover:opacity-80" : ""
+            }`}
+            alt="profile"
+          />
 
-          {/* phone number */}
-          <div>
-            <label className="label">Phone Number</label>
-            <input
-              type="text"
-              placeholder="Phone Number"
-              className="input input-bordered w-full"
-              {...register("phoneNumber", { required: true })}
-            />
+          <input
+            type="file"
+            hidden
+            ref={fileRef}
+            onChange={(e) => {
+              const file = e.target.files[0];
 
-            {errors.phoneNumber && (
-              <p className="text-red-500 text-sm mt-1">
-                Phone Number is required
-              </p>
-            )}
-          </div>
+              if (file) {
+                setSelectedFile(file);
+                setPreview(URL.createObjectURL(file));
+              }
+            }}
+          />
+        </div>
 
-          {/* email */}
-          <div>
-            <label className="label">Email</label>
-            <input
-              type="email"
-              placeholder="Email"
-              className="input input-bordered w-full"
-              {...register("email", { required: true })}
-            />
+        {/* FORM */}
+        <form onSubmit={handleSubmit(onSubmit)}>
 
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                Email is required
-              </p>
-            )}
-          </div>
+          {/* NAME */}
+          <input
+            className="input input-bordered w-full mb-3"
+            disabled={!editMode}
+            placeholder="Name"
+            {...register("name")}
+          />
 
-          {/* address */}
-          <div>
-            <label className="label">Address</label>
-            <textarea
-              placeholder="Your Address"
-              className="textarea textarea-bordered w-full"
-              {...register("address")}
-            ></textarea>
-          </div>
+          {/* PHONE */}
+          <input
+            className="input input-bordered w-full mb-3"
+            disabled={!editMode}
+            placeholder="Phone Number"
+            {...register("phoneNumber")}
+          />
 
-          {/* button */}
-          <button className="btn btn-primary w-full text-white">
-            Update Profile
-          </button>
+          {/* EMAIL */}
+          <input
+            className="input input-bordered w-full mb-3"
+            disabled={!editMode}
+            placeholder="Email"
+            {...register("email")}
+          />
+
+          {/* ADDRESS */}
+          <textarea
+            className="textarea textarea-bordered w-full mb-3"
+            disabled={!editMode}
+            placeholder="Address"
+            {...register("address")}
+          />
+
+          {/* SAVE */}
+          {editMode && (
+            <button className="btn btn-primary w-full">
+              Save Changes
+            </button>
+          )}
+
         </form>
       </div>
     </div>
   );
 };
 
-export default ProfileSettings;
+export default StudentProfileSettings;
