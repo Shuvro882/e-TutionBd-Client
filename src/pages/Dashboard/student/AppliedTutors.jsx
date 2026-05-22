@@ -77,7 +77,7 @@ const AppliedTutors = () => {
       );
 
       // REDIRECT TO STRIPE
-      window.location.href = res.data.url;
+      window.location.assign(res.data.url);
     } catch (error) {
       console.log(error);
 

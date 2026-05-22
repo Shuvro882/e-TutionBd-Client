@@ -170,7 +170,7 @@ const Navbar = () => {
               Log in
             </Link>
 
-            <Link to="/registration" className="btn btn-primary text-white">
+            <Link to="/registration" className="btn bg-primary text-white">
               Register
             </Link>
           </div>

@@ -21,6 +21,7 @@ import TuitionManagement from "../pages/Dashboard/admin/TuitionManagement";
 import TuitionPostDetails from "../pages/Home/Latest-Tuition/TuitionPostDetails";
 import AllTuition from "../pages/Home/allTuition/AllTuition";
 import MyApplications from "../pages/Dashboard/tutor/MyApplications";
+import PaymentHistory from "../pages/Dashboard/student/PaymentHistory";
 
 export const router = createBrowserRouter([
   {
@@ -104,6 +105,11 @@ export const router = createBrowserRouter([
       {
         path:"my-applications",
         Component: MyApplications
+
+      },
+      {
+        path:"payment-history",
+        Component: PaymentHistory,
 
       },
     ],
