@@ -5,7 +5,7 @@ import Contacts from "../pages/contact/Contacts";
 import Logins from "../pages/Auth/login/Logins";
 import Registration from "../pages/Auth/register/Registration";
 import PrivateRoute from "./PrivateRoute";
-import DashboardLayout from "../layouts/DashBoardLayout";
+import DashboardLayout from "../layouts/DashboardLayout";
 import MyTuitions from "../pages/Dashboard/student/MyTuitions";
 import PostTuition from "../pages/Dashboard/student/PostTuition";
 import NotFound from "../pages/errorPage/ErrorPage";
@@ -22,6 +22,7 @@ import TuitionPostDetails from "../pages/Home/Latest-Tuition/TuitionPostDetails"
 import AllTuition from "../pages/Home/allTuition/AllTuition";
 import MyApplications from "../pages/Dashboard/tutor/MyApplications";
 import PaymentHistory from "../pages/Dashboard/student/PaymentHistory";
+import RevenueHistory from "../pages/Dashboard/tutor/RevenueHistory";
 
 export const router = createBrowserRouter([
   {
@@ -110,6 +111,11 @@ export const router = createBrowserRouter([
       {
         path:"payment-history",
         Component: PaymentHistory,
+
+      },
+      {
+        path:"revenue-history",
+        Component: RevenueHistory,
 
       },
     ],
