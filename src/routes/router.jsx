@@ -23,6 +23,7 @@ import AllTuition from "../pages/Home/allTuition/AllTuition";
 import MyApplications from "../pages/Dashboard/tutor/MyApplications";
 import PaymentHistory from "../pages/Dashboard/student/PaymentHistory";
 import RevenueHistory from "../pages/Dashboard/tutor/RevenueHistory";
+import OngoingTuitions from "../pages/Dashboard/tutor/OngoingTuitions";
 
 export const router = createBrowserRouter([
   {
@@ -116,7 +117,10 @@ export const router = createBrowserRouter([
       {
         path:"revenue-history",
         Component: RevenueHistory,
-
+      },
+      {
+        path:"ongoing-tuitions",
+        Component: OngoingTuitions,
       },
     ],
   },

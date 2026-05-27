@@ -205,7 +205,7 @@ const Registration = () => {
                   </button>
                 </div>
 
-                <button className="btn btn-primary text-white mt-4">
+                <button className="btn bg-primary text-white mt-4">
                   Register
                 </button>
               </fieldset>

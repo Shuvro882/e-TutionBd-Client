@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Outlet, useLocation } from "react-router";
 import useAuth from "../hooks/useAuth";
 import { IoIosLogOut, IoIosSettings } from "react-icons/io";
-import { FaCirclePlus, FaHandHoldingDollar } from "react-icons/fa6";
+import { FaCirclePlus, FaHandHoldingDollar, FaRegCircleRight } from "react-icons/fa6";
 import { MdDashboard, MdOutlinePayment } from "react-icons/md";
 import { BsSendCheckFill } from "react-icons/bs";
 import { IoMenu, IoPeople } from "react-icons/io5";
@@ -45,6 +45,7 @@ const DashboardLayout = () => {
     "/dashboard/tuition-management": "Tuition Management",
     "/dashboard/my-applications": "My Applications",
     "/dashboard/revenue-history": "Revenue History",
+    "/dashboard/ongoing-tuitions": "Ongoing Tuitions",
   };
 
   return (
@@ -195,6 +196,12 @@ const DashboardLayout = () => {
                 <ActiveBtn to="/dashboard/revenue-history">
                 <FaHandHoldingDollar />
                  Revenue History
+                </ActiveBtn>
+              </li>
+              <li>
+                <ActiveBtn to="/dashboard/ongoing-tuitions">
+                <FaRegCircleRight />
+                Ongoing Tuitions
                 </ActiveBtn>
               </li>
             </ul>

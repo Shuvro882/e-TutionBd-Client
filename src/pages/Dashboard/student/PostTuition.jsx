@@ -44,7 +44,7 @@ const PostTuition = () => {
 
   });
 
-  // reset();
+  reset();
 };
 
   return (

@@ -98,7 +98,7 @@ const Logins = () => {
                   <a className="link link-hover">Forgot password?</a>
                 </div>
 
-                <button className="btn btn-primary text-white mt-4">
+                <button className="btn bg-primary text-white mt-4">
                   Login
                 </button>
               </fieldset>
