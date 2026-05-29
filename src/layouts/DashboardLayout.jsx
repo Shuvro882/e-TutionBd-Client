@@ -10,10 +10,12 @@ import Logo from "../Components/logo/Logo";
 import ActiveBtn from "../pages/Dashboard/activeBtn/ActiveBtn";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const { role, roleLoading } = useRole();
 
   const { data: dbUser = {} } = useQuery({
   queryKey: ["dbUser", user?.email],
@@ -132,7 +134,10 @@ const DashboardLayout = () => {
 
             {/* MENU (flex-1 so logout stays bottom) */}
             <ul className="menu space-y-1 flex-1">
-              <li>
+              {
+                 role === "student" && (
+                  <>
+                  <li>
                 
                 <ActiveBtn to="/dashboard/student-home">
                   <MdDashboard />
@@ -174,18 +179,18 @@ const DashboardLayout = () => {
                   Profile Settings
                 </ActiveBtn>
               </li>
-              <li>
+                  </>
+                 )
+              }
+              {
+                role === "tutor" && (
+                  <>
+                  <li>
                 <ActiveBtn to="/dashboard/tutor-profile">
                 <IoIosSettings />
                   Tutor Profile Settings
                 </ActiveBtn>
-              </li>
-              <li>
-                <ActiveBtn to="/dashboard/tuition-management">
-                <IoIosSettings />
-                  Tuition Management
-                </ActiveBtn>
-              </li>
+              </li>         
               <li>
                 <ActiveBtn to="/dashboard/my-applications">
                 <BsSendCheckFill />
@@ -204,6 +209,22 @@ const DashboardLayout = () => {
                 Ongoing Tuitions
                 </ActiveBtn>
               </li>
+                  </>
+                )
+              }
+
+              {
+                 role === "admin" && (
+                  <>
+                  <li>
+                <ActiveBtn to="/dashboard/tuition-management">
+                <IoIosSettings />
+                  Tuition Management
+                </ActiveBtn>
+              </li>
+                  </>
+                 )
+              }
             </ul>
 
             {/* ===== LOGOUT (BOTTOM FIXED) ===== */}
