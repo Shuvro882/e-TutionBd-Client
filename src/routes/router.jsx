@@ -27,6 +27,9 @@ import OngoingTuitions from "../pages/Dashboard/tutor/OngoingTuitions";
 import AdminRoute from "./AdminRoute";
 import AdminProfile from "../pages/Dashboard/admin/AdminProfile";
 import UserManagement from "../pages/Dashboard/admin/UserManagement";
+import AdminHome from "../pages/Dashboard/admin/AdminHome";
+import ReportsAnalytics from "../pages/Dashboard/admin/ReportsAnalytics";
+import TutorHome from "../pages/Dashboard/tutor/TutorHome";
 
 export const router = createBrowserRouter([
   {
@@ -104,6 +107,10 @@ export const router = createBrowserRouter([
         Component: TutorProfile,
       },
       {
+        path: "tutor-home",
+        Component: TutorHome,
+      },
+      {
         path:"my-applications",
         Component: MyApplications
 
@@ -122,12 +129,20 @@ export const router = createBrowserRouter([
         Component: OngoingTuitions,
       },
       {
+        path: "admin-home",
+        element:<AdminRoute><AdminHome></AdminHome></AdminRoute>
+      },
+      {
         path: "tuition-management",
         element:<AdminRoute><TuitionManagement></TuitionManagement></AdminRoute>
       },
       {
         path: "user-management",
         element:<AdminRoute><UserManagement></UserManagement></AdminRoute>
+      },
+      {
+        path: "reports-analytics",
+        Component: ReportsAnalytics,
       },
       {
         path: "admin-profile",

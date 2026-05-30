@@ -3,15 +3,17 @@ import { Link, Outlet, useLocation } from "react-router";
 import useAuth from "../hooks/useAuth";
 import { IoIosLogOut, IoIosSettings } from "react-icons/io";
 import { FaCirclePlus, FaHandHoldingDollar, FaRegCircleRight } from "react-icons/fa6";
-import { MdDashboard, MdOutlineAdminPanelSettings, MdOutlinePayment } from "react-icons/md";
+import { MdAddHome, MdDashboard, MdOutlineAdminPanelSettings, MdOutlinePayment, MdOutlineSettingsSuggest } from "react-icons/md";
 import { GrUserManager } from "react-icons/gr";
 import { BsSendCheckFill } from "react-icons/bs";
 import { IoMenu, IoPeople } from "react-icons/io5";
+import { SiSimpleanalytics } from "react-icons/si";
 import Logo from "../Components/logo/Logo";
 import ActiveBtn from "../pages/Dashboard/activeBtn/ActiveBtn";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import useRole from "../hooks/useRole";
+import { FaChalkboardTeacher } from "react-icons/fa";
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
@@ -45,12 +47,15 @@ const DashboardLayout = () => {
     "/dashboard/payment-history": "Payment History",
     "/dashboard/profile-settings": "Profile Settings",
     "/dashboard/tutor-profile": "Tutor Profile",
+    "/dashboard/tutor-home": "Tutor Home",
     "/dashboard/tuition-management": "Tuition Management",
     "/dashboard/my-applications": "My Applications",
     "/dashboard/revenue-history": "Revenue History",
     "/dashboard/ongoing-tuitions": "Ongoing Tuitions",
     "/dashboard/admin-profile": "Admin Profile",
     "/dashboard/user-management": "User Management",
+    "/dashboard/admin-home": "Admin Home",
+    "/dashboard/reports-analytics": "Reports Analytics",
   };
 
   return (
@@ -143,8 +148,8 @@ const DashboardLayout = () => {
                   <li>
                 
                 <ActiveBtn to="/dashboard/student-home">
-                  <MdDashboard />
-                  Dashboard Home
+                  <MdAddHome />
+                  Student Home
                 </ActiveBtn>
               </li>
 
@@ -179,7 +184,7 @@ const DashboardLayout = () => {
               <li>
                 <ActiveBtn to="/dashboard/profile-settings">
                 <IoIosSettings />
-                  Profile Settings
+                  Student Profile Settings
                 </ActiveBtn>
               </li>
                   </>
@@ -187,17 +192,23 @@ const DashboardLayout = () => {
               }
               {
                 role === "tutor" && (
-                  <>
-                  <li>
-                <ActiveBtn to="/dashboard/tutor-profile">
-                <IoIosSettings />
-                  Tutor Profile Settings
+              <>        
+              <li>
+                <ActiveBtn to="/dashboard/tutor-home">
+                <MdAddHome />
+                  Tutor Home
                 </ActiveBtn>
-              </li>         
+              </li>
               <li>
                 <ActiveBtn to="/dashboard/my-applications">
                 <BsSendCheckFill />
                   My Applications
+                </ActiveBtn>
+              </li>
+              <li>
+                <ActiveBtn to="/dashboard/ongoing-tuitions">
+                <FaRegCircleRight />
+                Ongoing Tuitions
                 </ActiveBtn>
               </li>
               <li>
@@ -207,9 +218,9 @@ const DashboardLayout = () => {
                 </ActiveBtn>
               </li>
               <li>
-                <ActiveBtn to="/dashboard/ongoing-tuitions">
-                <FaRegCircleRight />
-                Ongoing Tuitions
+                <ActiveBtn to="/dashboard/tutor-profile">
+                <IoIosSettings />
+                  Tutor Profile Settings
                 </ActiveBtn>
               </li>
                   </>
@@ -220,21 +231,34 @@ const DashboardLayout = () => {
                  role === "admin" && (
                   <>
                   <li>
-                <ActiveBtn to="/dashboard/tuition-management">
-                <IoIosSettings />
-                  Tuition Management
+                <ActiveBtn to="/dashboard/admin-home">
+                <MdAddHome />
+                  Admin Home
                 </ActiveBtn>
               </li>
                   <li>
-                <ActiveBtn to="/dashboard/admin-profile">
-                <MdOutlineAdminPanelSettings />
-                  Admin Profile
+                <ActiveBtn to="/dashboard/tuition-management">
+                <FaChalkboardTeacher />
+                  Tuition Management
                 </ActiveBtn>
               </li>
+                  
                   <li>
                 <ActiveBtn to="/dashboard/user-management">
                 <GrUserManager />
                   User Management
+                </ActiveBtn>
+              </li>
+                  <li>
+                <ActiveBtn to="/dashboard/reports-analytics">
+                <SiSimpleanalytics />
+                  Reports Analytics
+                </ActiveBtn>
+              </li>
+              <li>
+                <ActiveBtn to="/dashboard/admin-profile">
+                <MdOutlineSettingsSuggest />
+                  Admin Profile Settings
                 </ActiveBtn>
               </li>
                   </>

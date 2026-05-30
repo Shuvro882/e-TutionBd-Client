@@ -1,32 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../Components/loading/Loading";
 
 const UserManagement = () => {
   const axiosSecure = useAxiosSecure();
-
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(0);
-  const limit = 10;
-
-  // Load users with search + pagination
+  
   const {
     data,
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["admin-users", search, page],
+    queryKey: ["admin-users"],
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        `/users?search=${search}&page=${page}&limit=${limit}`
-      );
+      const res = await axiosSecure.get("/users");
       return res.data;
     },
   });
 
   const users = data?.users || [];
-  const total = data?.total || 0;
 
   // Role change
   const handleRoleChange = async (id, role) => {
@@ -50,18 +42,6 @@ const UserManagement = () => {
       <h2 className="text-2xl font-bold text-center mb-4">
         User Management
       </h2>
-
-      {/* Search */}
-      <input
-        type="text"
-        placeholder="Search by name or email..."
-        className="input input-bordered w-full mb-4"
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setPage(0);
-        }}
-      />
 
       {/* Table */}
       <div className="overflow-x-auto shadow">
@@ -118,29 +98,6 @@ const UserManagement = () => {
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Pagination */}
-      <div className="flex justify-center gap-2 mt-5">
-        <button
-          className="btn btn-sm"
-          onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
-          disabled={page === 0}
-        >
-          Prev
-        </button>
-
-        <span className="px-3 py-1">
-          Page {page + 1}
-        </span>
-
-        <button
-          className="btn btn-sm"
-          onClick={() => setPage((prev) => prev + 1)}
-          disabled={(page + 1) * limit >= total}
-        >
-          Next
-        </button>
       </div>
     </div>
   );
