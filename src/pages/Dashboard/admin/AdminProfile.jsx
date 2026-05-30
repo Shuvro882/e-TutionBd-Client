@@ -1,11 +1,209 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+import { FaEdit } from "react-icons/fa";
 
 const AdminProfile = () => {
-    return (
-        <div>
-            
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  const fileRef = useRef();
+
+  const [editMode, setEditMode] = useState(false);
+  const [preview, setPreview] = useState(user?.photoURL || "");
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const { register, handleSubmit, reset } = useForm();
+
+  // LOAD USER DATA
+  useEffect(() => {
+    if (user) {
+      const data = {
+        name: user.displayName || "",
+        phoneNumber: user.phoneNumber || "",
+        address: user.address || "",
+        designation: user.designation || "",
+        experience: user.experience || "",
+        about: user.about || "",
+        photoURL: user.photoURL || "",
+      };
+
+      reset(data);
+    }
+  }, [user, reset]);
+
+  // IMAGE CLICK
+  const handleImageClick = () => {
+    if (!editMode) return;
+    fileRef.current?.click();
+  };
+
+  // UPDATE PROFILE
+  const onSubmit = async (data) => {
+    try {
+      let photoURL = preview;
+
+      // IMAGE UPLOAD
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("image", selectedFile);
+
+        const res = await fetch(
+          `https://api.imgbb.com/1/upload?key=${
+            import.meta.env.VITE_image_host_key
+          }`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        const result = await res.json();
+
+        if (result.success) {
+          photoURL = result.data.url;
+        }
+      }
+
+      const updatedProfile = {
+        name: data.name,
+        phoneNumber: data.phoneNumber,
+        address: data.address,
+        designation: data.designation,
+        experience: data.experience,
+        about: data.about,
+        photoURL,
+      };
+
+      const res = await axiosSecure.patch(
+        `/users/${user.email}`,
+        updatedProfile
+      );
+
+      if (res.data.modifiedCount > 0) {
+        setPreview(photoURL);
+        setEditMode(false);
+
+        Swal.fire({
+          icon: "success",
+          title: "Profile Updated Successfully!",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto p-4 md:p-6">
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold">
+          Admin Profile
+        </h2>
+
+        <button
+          onClick={() => setEditMode(!editMode)}
+          className="btn btn-primary btn-sm flex items-center gap-2"
+        >
+          <FaEdit />
+          {editMode ? "Cancel" : "Edit"}
+        </button>
+      </div>
+
+      {/* CARD */}
+      <div className="bg-base-100 shadow-xl rounded-2xl p-6">
+        {/* IMAGE */}
+        <div className="flex flex-col items-center mb-6">
+          <img
+            src={preview || "https://i.ibb.co/4pDNDk1/avatar.png"}
+            alt="profile"
+            onClick={handleImageClick}
+            className={`w-28 h-28 rounded-full object-cover border-4 ${
+              editMode ? "cursor-pointer hover:opacity-80" : ""
+            }`}
+          />
+
+          {/* FILE INPUT */}
+          <input
+            type="file"
+            hidden
+            ref={fileRef}
+            onChange={(e) => {
+              const file = e.target.files[0];
+
+              if (file) {
+                setSelectedFile(file);
+                setPreview(URL.createObjectURL(file));
+              }
+            }}
+          />
         </div>
-    );
+
+        {/* FORM */}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* NAME */}
+          <input
+            className="input input-bordered w-full mb-3"
+            disabled={!editMode}
+            placeholder="Name"
+            {...register("name")}
+          />
+
+          {/* PHONE */}
+          <input
+            className="input input-bordered w-full mb-3"
+            disabled={!editMode}
+            placeholder="Phone Number"
+            {...register("phoneNumber")}
+          />
+
+          {/* DESIGNATION */}
+          <input
+            className="input input-bordered w-full mb-3"
+            disabled={!editMode}
+            placeholder="Designation"
+            {...register("designation")}
+          />
+
+          {/* EXPERIENCE */}
+          <input
+            className="input input-bordered w-full mb-3"
+            disabled={!editMode}
+            placeholder="Experience"
+            {...register("experience")}
+          />
+
+          {/* ADDRESS */}
+          <textarea
+            className="textarea textarea-bordered w-full mb-3"
+            disabled={!editMode}
+            placeholder="Address"
+            {...register("address")}
+          />
+
+          {/* ABOUT */}
+          <textarea
+            className="textarea textarea-bordered w-full mb-3"
+            disabled={!editMode}
+            placeholder="About Admin"
+            {...register("about")}
+          />
+
+          {/* SAVE BUTTON */}
+          {editMode && (
+            <button className="btn btn-primary w-full">
+              Save Changes
+            </button>
+          )}
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default AdminProfile;

@@ -3,7 +3,8 @@ import { Link, Outlet, useLocation } from "react-router";
 import useAuth from "../hooks/useAuth";
 import { IoIosLogOut, IoIosSettings } from "react-icons/io";
 import { FaCirclePlus, FaHandHoldingDollar, FaRegCircleRight } from "react-icons/fa6";
-import { MdDashboard, MdOutlinePayment } from "react-icons/md";
+import { MdDashboard, MdOutlineAdminPanelSettings, MdOutlinePayment } from "react-icons/md";
+import { GrUserManager } from "react-icons/gr";
 import { BsSendCheckFill } from "react-icons/bs";
 import { IoMenu, IoPeople } from "react-icons/io5";
 import Logo from "../Components/logo/Logo";
@@ -48,6 +49,8 @@ const DashboardLayout = () => {
     "/dashboard/my-applications": "My Applications",
     "/dashboard/revenue-history": "Revenue History",
     "/dashboard/ongoing-tuitions": "Ongoing Tuitions",
+    "/dashboard/admin-profile": "Admin Profile",
+    "/dashboard/user-management": "User Management",
   };
 
   return (
@@ -220,6 +223,18 @@ const DashboardLayout = () => {
                 <ActiveBtn to="/dashboard/tuition-management">
                 <IoIosSettings />
                   Tuition Management
+                </ActiveBtn>
+              </li>
+                  <li>
+                <ActiveBtn to="/dashboard/admin-profile">
+                <MdOutlineAdminPanelSettings />
+                  Admin Profile
+                </ActiveBtn>
+              </li>
+                  <li>
+                <ActiveBtn to="/dashboard/user-management">
+                <GrUserManager />
+                  User Management
                 </ActiveBtn>
               </li>
                   </>

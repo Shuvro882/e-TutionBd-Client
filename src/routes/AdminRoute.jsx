@@ -5,7 +5,7 @@ import useRole from '../hooks/useRole';
 import ErrorPage from '../pages/errorPage/ErrorPage';
 
 const AdminRoute = ({children}) =>{
-    const {user, loading} = useAuth();
+    const {loading} = useAuth();
     const {role, roleLoading} = useRole();
 
 

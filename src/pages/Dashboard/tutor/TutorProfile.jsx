@@ -127,7 +127,7 @@ const TutorProfile = () => {
             alt="profile"
           />
 
-          {/* ❗ IMPORTANT: NO register here */}
+          {/*  IMPORTANT: NO register here */}
           <input
             type="file"
             hidden
