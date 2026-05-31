@@ -166,10 +166,12 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <Link to="/logins" className="btn btn-ghost">
+            {/* Login only desktop */}
+            <Link to="/logins" className="btn btn-ghost hidden lg:flex">
               Log in
             </Link>
 
+            {/* Register visible everywhere */}
             <Link to="/registration" className="btn bg-primary text-white">
               Register
             </Link>
