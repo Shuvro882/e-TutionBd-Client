@@ -70,7 +70,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "all-tuition",
-        Component: AllTuition,
+        element:<PrivateRoute><AllTuition></AllTuition></PrivateRoute>
       },
     ],
   },
@@ -142,11 +142,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "reports-analytics",
-        Component: ReportsAnalytics,
+        element:<AdminRoute><ReportsAnalytics></ReportsAnalytics></AdminRoute>
       },
       {
         path: "admin-profile",
-        Component: AdminProfile
+        element:<AdminRoute><AdminProfile></AdminProfile></AdminRoute>
       },
     ],
   },

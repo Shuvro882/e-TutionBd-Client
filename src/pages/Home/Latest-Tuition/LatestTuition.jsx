@@ -13,8 +13,8 @@ const LatestTuition = () => {
   const { data: tuitions = [], isLoading } = useQuery({
     queryKey: ["latestTuitions"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/approved-tuitions");
-      return res.data.slice(0, 6);
+      const res = await axiosSecure.get("/approved-tuitions?limit=6");
+      return res.data.tuitions;
     },
   });
 
